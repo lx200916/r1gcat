@@ -80,8 +80,8 @@ impl Default for Terminal {
     fn default() -> Self {
         let width = terminal_width().unwrap_or(80);
         let buffer = BufferWriter::stdout(ColorChoice::Auto);
-        let tag_width = 20;
-        let process_name_width = 25;
+        let tag_width = 30;
+        let process_name_width = 20;
         let pid_width = 10;
         Self {
             width,
@@ -120,15 +120,27 @@ impl Terminal {
             }
         };
         let tag_chars = record.tag.chars().count();
-        let tag = format!(
-            "{:>width$}",
-            record
-                .tag
-                .chars()
-                .take(std::cmp::min(self.tag_width, tag_chars))
-                .collect::<String>(),
-            width = self.tag_width
-        );
+        let tag = if self.hide_timestamp {
+            format!(
+                "{:<width$}",
+                record
+                    .tag
+                    .chars()
+                    .take(std::cmp::min(self.tag_width, tag_chars))
+                    .collect::<String>(),
+                width = self.tag_width
+            )
+        } else {
+            format!(
+                "{:>width$}",
+                record
+                    .tag
+                    .chars()
+                    .take(std::cmp::min(self.tag_width, tag_chars))
+                    .collect::<String>(),
+                width = self.tag_width
+            )
+        };
         let process_name = if self.use_process_name {
             let chars = record.process_name.chars().count();
             format!(
