@@ -1,11 +1,11 @@
 use crate::record::{Level, LogcatRecord, ProcessRecord};
 use chrono::{prelude::*, LocalResult};
-use nom::bytes::complete::{tag, take, take_till, take_until, take_until1};
-use nom::character::complete::{char, digit1, i32, multispace1, u32};
-use nom::character::{is_digit, is_newline, is_space};
-use nom::combinator::{cond, eof, flat_map, opt, peek, rest, value};
+use nom::bytes::complete::{tag, take, take_until1};
+use nom::character::complete::{char, i32, multispace1, u32};
+
+use nom::combinator::{opt, peek, rest};
 use nom::error::{Error, ErrorKind};
-use nom::sequence::{delimited, terminated, tuple};
+use nom::sequence::{terminated, tuple};
 use nom::{IResult, Parser};
 
 pub struct LogcatParser {}

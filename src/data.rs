@@ -35,9 +35,12 @@ impl ProcessRecords {
                 .arg("cat")
                 .arg(format!("/proc/{}/cmdline", pid))
                 .output();
-            let mut cmdline:String = match cmd {
+            let mut cmdline: String = match cmd {
                 // Get First Part until /0
-                Ok(cmd) => String::from_utf8_lossy(&cmd.stdout).split("\0").collect::<Vec<&str>>()[0].to_string(),
+                Ok(cmd) => String::from_utf8_lossy(&cmd.stdout)
+                    .split("\0")
+                    .collect::<Vec<&str>>()[0]
+                    .to_string(),
                 Err(_) => format!("pid-{}", pid),
             };
             if cmdline.is_empty() {
